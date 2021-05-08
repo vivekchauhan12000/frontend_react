@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import {useHistory} from "react-router-dom"
 import Axios from "axios"
  
-const url="http://localhost:8080/api/Donor"
+const url="https://apiplasma.herokuapp.com/api/Donor"
 
 function DonorForm() {
   let history = useHistory();

@@ -42,6 +42,54 @@ function PatientForm() {
     }
   }
     
+  //OTP sending
+  
+  const [OTP,setOTP]=useState("");
+
+  const handleOnOTP=(e)=>{
+     const newOTPcheck=e.target.value
+    setOTP(newOTPcheck);
+    console.log(newOTPcheck);
+  }
+
+
+  const  onOTP=(e)=>{
+    e.preventDefault();
+
+    try {
+      Axios.post("https://api.globalshapersjaipur.com/otp/validate",{
+        "phone":String(data.phone),
+        "otp":String(OTP)
+     },{headers}).then(res=>{
+        console.log(res.status);
+        if (res.status==200) {
+          
+          try {
+            Axios.post("https://apiplasma.herokuapp.com/api/Registered",{
+           phone:data.phone,
+           }).then(res=>{
+              console.log(res.data);
+          })
+      
+            
+            
+          }catch (error) {
+            console.log(error);
+          }
+        }
+
+         else {
+          console.log("Please try again")
+          
+        }
+    })
+
+      
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
   //form data
@@ -177,13 +225,13 @@ function PatientForm() {
     <div>
       <form>
       <h5>OTP</h5>
-    <input type="number" onChange={(e)=>handleOnSubmit(e)}  value={data.bloodType} className="form-control" id="OTP"/>
-    <button type="submit" className="btn btn-primary" onClick={onsubmit}>Submit</button>
+    <input type="number" className="form-control" id="OTP" onChange={(e)=>handleOnOTP(e)} value={OTP}/>
+    <button type="submit" className="btn btn-primary" onClick={onOTP}>Submit</button>
     </form>
   </div>
   </Popup>
 
-  <button className="btn btn-primary" onClick={otpSend}>Send OTP
+  <button className="btn btn-primary"  onClick={otpSend}>Send OTP
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone" viewBox="0 0 16 16">
   <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z"/>
   <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
